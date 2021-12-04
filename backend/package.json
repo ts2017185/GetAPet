@@ -9,7 +9,7 @@
         "dev": "nodemon ./index.js localhost 5000",
         "start": "node ."
     },
-    "author": "Thiago Dos Santos Silva <tiago.santos05@hotmail.com> (2017185)",
+    "author": "Thiago Dos Santos Silva <ts2017185@gmail.com> (2017185)",
     "license": "MIT",
     "dependencies": {
         "bcrypt": "^5.0.1",
