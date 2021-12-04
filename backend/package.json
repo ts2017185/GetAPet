@@ -6,7 +6,8 @@
     "engines": { "node": "16.x" },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon ./index.js localhost 5000"
+        "dev": "nodemon ./index.js localhost 5000",
+        "start": "node ."
     },
     "author": "Thiago Dos Santos Silva <tiago.santos05@hotmail.com> (2017185)",
     "license": "MIT",
