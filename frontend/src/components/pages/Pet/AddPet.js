@@ -56,10 +56,10 @@ function AddPet() {
   return (
     <section>
       <div className={styles.addpet_header}>
-        <h1>Cadastre um Pet</h1>
-        <p>Depois ele ficará disponível para adoção</p>
+        <h1>Register a pet</h1>
+        <p>It will later be available for adoption.</p>
       </div>
-      <PetForm handleSubmit={registerPet} btnText="Cadastrar" />
+      <PetForm handleSubmit={registerPet} btnText="Register" />
     </section>
   )
 }
