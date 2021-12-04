@@ -70,11 +70,11 @@ function Profile() {
 
     setFlashMessage(data.message, msgType)
   }
-
+  // register user inputs
   return (
     <section>
       <div className={styles.profile_header}>
-        <h1>Perfil</h1>
+        <h1>Profile</h1>
         {(user.image || preview) && (
           <RoundedImage
             src={
@@ -88,47 +88,47 @@ function Profile() {
       </div>
       <form onSubmit={handleSubmit} className={formStyles.form_container}>
         <Input
-          text="Imagem"
+          text="Image"
           type="file"
           name="image"
           handleOnChange={onFileChange}
         />
         <Input
-          text="E-mail"
+          text="Email"
           type="email"
           name="email"
-          placeholder="Digite o e-mail"
+          placeholder="Enter the email"
           handleOnChange={handleChange}
           value={user.email || ''}
         />
         <Input
-          text="Nome"
+          text="Name"
           type="text"
           name="name"
-          placeholder="Digite o nome"
+          placeholder="Enter the name"
           handleOnChange={handleChange}
           value={user.name || ''}
         />
         <Input
-          text="Telefone"
+          text="Phone"
           type="text"
           name="phone"
-          placeholder="Digite o seu telefone"
+          placeholder="Enter your phone number"
           handleOnChange={handleChange}
           value={user.phone || ''}
         />
         <Input
-          text="Senha"
+          text="Password"
           type="password"
           name="password"
-          placeholder="Digite a sua senha"
+          placeholder="Enter the password"
           handleOnChange={handleChange}
         />
         <Input
-          text="Confirmação de senha"
+          text="Confirm the password"
           type="password"
           name="confirmpassword"
-          placeholder="Confirme a sua senha"
+          placeholder="Confirm the password"
           handleOnChange={handleChange}
         />
         <input type="submit" value="Editar" />

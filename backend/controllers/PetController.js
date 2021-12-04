@@ -16,11 +16,9 @@ module.exports = class PetController {
         const images = req.files
         const available = true
 
-        // console.log(req.body)
         console.log(images)
-            // return
 
-        // validations
+        // pet's validations
         if (!name) {
             res.status(422).json({ message: 'You must enter a name!' })
             return
@@ -207,7 +205,7 @@ module.exports = class PetController {
             return
         }
 
-        // validations
+        // pet's validations
         if (!name) {
             res.status(422).json({ message: 'You must enter a name!' })
             return
@@ -300,7 +298,7 @@ module.exports = class PetController {
         console.log(pet)
 
         await Pet.findByIdAndUpdate(pet._id, pet)
-
+        // send pet's owner phone number for contact
         res.status(200).json({
             message: `The visit was successfully scheduled, please contact ${pet.user.name} on the phone number: ${pet.user.phone}`,
         })

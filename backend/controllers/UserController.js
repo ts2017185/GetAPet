@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
+const path = require('path')
 
 const User = require('../models/User')
 
@@ -8,79 +10,93 @@ const getUserByToken = require('../helpers/get-user-by-token')
 const getToken = require('../helpers/get-token')
 const createUserToken = require('../helpers/create-user-token')
 const { imageUpload } = require('../helpers/image-upload')
+const ValidationException = require('../exceptions/Validation.exception');
+const WrongCredentialsException = require('../exceptions/WrongCredentials.exception')
+const UserRepository = require('../repository/User.repository')
+const { isString, minLength } = require('class-validator');
+const { findByIdAndUpdate } = require('../models/User')
 
+/**
+ * this function is responsible for register an user
+ * 
+ * @param body
+ * @param {string} body.name
+ * @param {string} body.email
+ * @param {string} body.phone
+ * @param {string} body.password
+ * @param {string} body.confirmpassword
+ *
+ * @returns {Promise<{message: string, userId: *, token: *|undefined}>}
+ *
+ */
 
+async function register(body) {
+    const name = body.name
+    const email = body.email
+    const phone = body.phone
+    const password = body.password
+    const confirmpassword = body.confirmpassword
 
-module.exports = class UserController {
-    static async register(req, res) {
-        const name = req.body.name
-        const email = req.body.email
-        const phone = req.body.phone
-        const password = req.body.password
-        const confirmpassword = req.body.confirmpassword
-
-        // validations
-        if (!name) {
-            res.status(422).json({ message: 'You must enter a name!' })
-            return
-        }
-
-        if (!email) {
-            res.status(422).json({ message: 'You must enter a email!' })
-            return
-        }
-
-        if (!phone) {
-            res.status(422).json({ message: 'You must enter a phone number!!' })
-            return
-        }
-
-        if (!password) {
-            res.status(422).json({ message: 'You must enter a password!!' })
-            return
-        }
-
-        if (!confirmpassword) {
-            res.status(422).json({ message: 'Password confirmation is mandatory.!' })
-            return
-        }
-
-        if (password != confirmpassword) {
-            res
-                .status(422)
-                .json({ message: 'Password and confirmation must match.!' })
-            return
-        }
-
-        // check if user exists
-        const userExists = await User.findOne({ email: email })
-
-        if (userExists) {
-            res.status(422).json({ message: 'Please use another email!' })
-            return
-        }
-
-        // create password
-        const salt = await bcrypt.genSalt(12)
-        const passwordHash = password //await bcrypt.hash(password, salt)
-
-        // create user
-        const user = new User({
-            name: name,
-            email: email,
-            phone: phone,
-            password: passwordHash,
-        })
-
-        try {
-            const newUser = await user.save()
-
-            await createUserToken(newUser, req, res)
-        } catch (error) {
-            res.status(500).json({ message: error })
-        }
+    // user's validations when registering a new user
+    if (!isString(name)) {
+        throw new ValidationException('You must enter a name!')
     }
 
+    if (!email) {
+        throw new ValidationException('You must enter a email!')
+    }
+
+    if (!phone) {
+        throw new ValidationException('You must enter a phone number!!')
+    }
+
+    if (!password) {
+        throw new ValidationException('You must enter a password!!')
+    }
+
+    if (!confirmpassword) {
+        throw new ValidationException('Password confirmation is mandatory.!')
+    }
+
+    if (password != confirmpassword) {
+        throw new ValidationException('Password and confirmation must match.!')
+    }
+
+    // check if user exists
+    const userExists = await UserRepository.findOne({ email: email })
+
+    if (userExists) {
+        throw new ValidationException('Please use another email!')
+    }
+
+    // create password
+    const salt = await bcrypt.genSalt(12)
+    const passwordHash = await bcrypt.hash(password, salt)
+
+    const newUser = await UserRepository.save({
+        name: name,
+        email: email,
+        phone: phone,
+        password: password,
+    })
+
+    return await createUserToken(newUser)
+}
+async function deleteUser(id, image) {
+
+    var testImage = path.resolve(__dirname, "..", "public/images/users", image || "huhu.txt")
+
+    if (fs.existsSync(testImage)) {
+        fs.unlinkSync(testImage)
+
+    }
+    return UserRepository.findByIdAndUpdate(id, { name: '', email: '', phone: '', password: '', image: '' })
+
+}
+
+class UserController {
+    
+    // user's validations when a user try to login
     static async login(req, res) {
         const email = req.body.email
         const password = req.body.password
@@ -104,14 +120,14 @@ module.exports = class UserController {
                 .json({ message: 'There is no registered user with this email!' })
         }
 
-        // check if password match
+        // check if password match, the seccond piace of code didn't work well 
         const checkPassword = password == user.password //await bcrypt.compare(password, user.password)
-
+                                                        
         if (!checkPassword) {
-            return res.status(422).json({ message: 'Incorrect password!' })
+            throw new WrongCredentialsException("Password incorrect")
         }
 
-        await createUserToken(user, req, res)
+        return await createUserToken(user)
     }
 
     static async checkUser(req, res) {
@@ -147,15 +163,8 @@ module.exports = class UserController {
     }
 
     static async editUser(req, res) {
-        const token = getToken(req)
 
-        //console.log(token);
-
-        const user = await getUserByToken(token)
-
-        // console.log(user);
-        // console.log(req.body)
-        // console.log(req.file.filename)
+        let user = req.user
 
         const name = req.body.name
         const email = req.body.email
@@ -167,6 +176,13 @@ module.exports = class UserController {
 
         if (req.file) {
             image = req.file.filename
+        }
+
+        var testImage = path.resolve(__dirname, "..", "public/images/users", req.user.image)
+
+        if (fs.existsSync(testImage)) {
+            fs.unlinkSync(testImage)
+
         }
 
         // validations
@@ -181,9 +197,6 @@ module.exports = class UserController {
             res.status(422).json({ message: 'You must enter an email!' })
             return
         }
-
-        // check if user exists
-        const userExists = await User.findOne({ email: email })
 
         if (user.email !== email && userExists) {
             res.status(422).json({ message: 'Please use another email!' })
@@ -208,15 +221,13 @@ module.exports = class UserController {
         if (password != confirmpassword) {
             res.status(422).json({ error: 'Passwords do not match.' })
 
-            // change password
+        // change password
         } else if (password == confirmpassword && password != null) {
-            // creating password
-            const salt = await bcrypt.genSalt(12)
-            const reqPassword = req.body.password
-
-            const passwordHash = await bcrypt.hash(reqPassword, salt)
-
-            user.password = passwordHash
+            
+        // creating password
+        const reqPassword = req.body.password
+        const passwordHash = await bcrypt.hash(reqPassword, salt)
+        user.password = password
         }
 
         try {
@@ -230,4 +241,10 @@ module.exports = class UserController {
             res.status(500).json({ message: error })
         }
     }
+}
+
+module.exports = {
+    UserController,
+    register,
+    deleteUser
 }

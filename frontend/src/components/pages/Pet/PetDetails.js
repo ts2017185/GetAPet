@@ -42,48 +42,42 @@ function PetDetails() {
         setFlashMessage(data.message, msgType)
     }
 
-    return ( <
-        >
-        {
-            pet.name && ( <
-                section className = { styles.pet_details_container } >
-                <
-                div className = { styles.petdetails_header } >
-                <
-                h1 > Conhecendo o Pet: { pet.name } < /h1> <
-                p > Se tiver interesse, marque uma visita para conhecê - lo! < /p> < /
-                div > <
-                div className = { styles.pet_images } > {
-                    pet.images.map((image, index) => ( <
-                        img key = { index }
-                        src = { `${process.env.REACT_APP_API}/images/pets/${image}` }
-                        alt = { pet.name }
-                        />
-                    ))
-                } <
-                /div> <
-                p >
-                <
-                span className = "bold" > Peso: < /span> {pet.weight}kg < /
-                p > <
-                p >
-                <
-                span className = "bold" > Idade: < /span> {pet.age} anos < /
-                p > {
-                    token ? ( <
-                        button onClick = { schedule } > Solicitar uma Visita < /button>
-                    ) : ( <
-                        p >
-                        Você precisa < Link to = "/register" > criar uma conta < /Link> para
-                        solicitar a visita. <
-                        /p>
-                    )
-                } <
-                /section>
-            )
-        } <
-        />
-    )
-}
-
-export default PetDetails
+    return (
+        <>
+          {pet.name && (
+            <section className={styles.pet_details_container}>
+              <div className={styles.petdetails_header}>
+                <h1>Knowing the pet: {pet.name}</h1>
+                <p>If interested, make an appointment to meet the pet!</p>
+              </div>
+              <div className={styles.pet_images}>
+                {pet.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={`${process.env.REACT_APP_API}/images/pets/${image}`}
+                    alt={pet.name}
+                  />
+                ))}
+              </div>
+              <p>
+                <span className="bold">Weight:</span> {pet.weight}kg
+              </p>
+              <p>
+                <span className="bold">Age:</span> {pet.age} anos
+              </p>
+              {token ? (
+                <button onClick={schedule}>Request a visit</button>
+              ) : (
+                <p>
+                  You need to <Link to="/register">create an account</Link> to
+                  request a visit.
+                </p>
+              )}
+            </section>
+          )}
+        </>
+      )
+    }
+    
+    export default PetDetails
+    

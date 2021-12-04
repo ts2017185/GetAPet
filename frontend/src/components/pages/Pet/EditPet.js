@@ -68,11 +68,11 @@ function EditPet() {
   return (
     <section>
       <div className={styles.addpet_header}>
-        <h1>Editando o Pet: {pet.name}</h1>
-        <p>Depois da edição os dados serão atualizados no sistema</p>
+        <h1>Editing the pet: {pet.name}</h1>
+        <p>After editing the data will be updated in the system</p>
       </div>
       {pet.name && (
-        <PetForm handleSubmit={updatePet} petData={pet} btnText="Editar" />
+        <PetForm handleSubmit={updatePet} petData={pet} btnText="Edit" />
       )}
     </section>
   )

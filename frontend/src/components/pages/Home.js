@@ -17,8 +17,8 @@ function Home() {
   return (
     <section>
       <div className={styles.pet_home_header}>
-        <h1>Adote um Pet</h1>
-        <p>Veja os detalhes de cada um e conheça o tutor deles</p>
+        <h1>Hey! What about adopting a pet?</h1>
+        <p>Log in and see details of each one and meet their tutor.</p>
       </div>
       <div className={styles.pet_container}>
         {pets.length > 0 &&
@@ -32,17 +32,17 @@ function Home() {
               ></div>
               <h3>{pet.name}</h3>
               <p>
-                <span className="bold">Peso:</span> {pet.weight}kg
+                <span className="bold">Weight:</span> {pet.weight}kg
               </p>
               {pet.available ? (
-                <Link to={`/pet/${pet._id}`}>Mais detalhes</Link>
+                <Link to={`/pet/${pet._id}`}>More details</Link>
               ) : (
-                <p className={styles.adopted_text}>Adotado!</p>
+                <p className={styles.adopted_text}>Adopted!</p>
               )}
             </div>
           ))}
         {pets.length === 0 && (
-          <p>Não há pets cadastrados ou disponíveis para adoção no momento!</p>
+          <p>There are no pets registered or available for adoption at the moment!</p>
         )}
       </div>
     </section>

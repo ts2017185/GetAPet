@@ -25,7 +25,7 @@ function MyAdoptions() {
   return (
     <section>
       <div className={styles.petslist_header}>
-        <h1>Minhas adoções</h1>
+        <h1>My Adoptions</h1>
       </div>
       <div className={styles.petslist_container}>
         {pets.length > 0 &&
@@ -39,22 +39,22 @@ function MyAdoptions() {
               <span className="bold">{pet.name}</span>
               <div className={styles.contacts}>
                 <p>
-                  <span className="bold">Ligue para:</span> {pet.user.phone}
+                  <span className="bold">Contact:</span> {pet.user.phone}
                 </p>
                 <p>
-                  <span className="bold">Fale com:</span> {pet.user.name}
+                  <span className="bold">Talk with:</span> {pet.user.name}
                 </p>
               </div>
               <div className={styles.actions}>
                 {pet.available ? (
-                  <p>Adoção em processo</p>
+                  <p>Adoption in process</p>
                 ) : (
-                  <p>Parabéns por concluir a adoção</p>
+                  <p>Congratulations on completing the adoption!</p>
                 )}
               </div>
             </div>
           ))}
-        {pets.length === 0 && <p>Ainda não há pets adotados!</p>}
+        {pets.length === 0 && <p>There are no adopted pets yet!</p>}
       </div>
     </section>
   )

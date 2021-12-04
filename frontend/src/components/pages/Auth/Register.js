@@ -22,47 +22,47 @@ function Register() {
 
   return (
     <section className={styles.form_container}>
-      <h1>Registrar</h1>
+      <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <Input
-          text="Nome"
+          text="Name"
           type="text"
           name="name"
-          placeholder="Digite o seu nome"
+          placeholder="Type your name"
           handleOnChange={handleChange}
         />
         <Input
-          text="Telefone"
+          text="Phone number"
           type="text"
           name="phone"
-          placeholder="Digite o seu telefone"
+          placeholder="Insert your phone number"
           handleOnChange={handleChange}
         />
         <Input
-          text="E-mail"
+          text="Email"
           type="email"
           name="email"
-          placeholder="Digite o seu e-mail"
+          placeholder="Insert your email"
           handleOnChange={handleChange}
         />
         <Input
-          text="Senha"
+          text="Password"
           type="password"
           name="password"
-          placeholder="Digite a sua senha"
+          placeholder="Enter a password"
           handleOnChange={handleChange}
         />
         <Input
-          text="Confirmação de senha"
+          text="Confirm the password"
           type="password"
           name="confirmpassword"
-          placeholder="Confirme a sua senha"
+          placeholder="Confirm the password"
           handleOnChange={handleChange}
         />
-        <input type="submit" value="Cadastrar" />
+        <input type="submit" value="Register" />
       </form>
       <p>
-        Já tem conta? <Link to="/login">Clique aqui.</Link>
+      Already have an account? <Link to="/login">Click here.</Link>
       </p>
     </section>
   )

@@ -1,25 +1,31 @@
+require('custom-env').env(true)
 const express = require('express')
-    //const cors = require('cors')
+const cors = require('cors')
 
 const app = express()
 
-// Config JSON response
+// config JSON response
 app.use(express.json())
 
-// Solve CORS
-const cors = require('cors')
-app.use(cors({ origin: 'http://localhost:3000' }))
+// solve CORS
+app.use(cors({ origin: 'http://localhost:3000', allowedHeaders: ['Content-Type', 'Authorization'] }))
 
-// Public folder for images
+// public folder for images
 app.use(express.static('public'))
 
-// Routes
-// Unificar rotas em arquivo unico
-const PetRoutes = require('./routes/PetRoutes')
-const UserRoutes = require('./routes/UserRoutes')
+// routes
+// put all the routes in a unic file
+app.use('/pets', require('./routes/PetRoutes'))
+app.use('/users', require('./routes/UserRoutes'))
 
-app.use('/pets', PetRoutes)
-app.use('/users', UserRoutes)
+// error handler
+app.use((error, req, res, next) => {
+    console.log(error)
+    if (!error.status) {
+        error.status = 500
+    }
+    res.status(error.status).json({ message: error.message, type: error.constructor.name, stack: error.stack })
+})
 
 app.listen(5000, () => {
     console.log('Running at port 5000')

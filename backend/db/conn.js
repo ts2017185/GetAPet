@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 async function main() {
-    await mongoose.connect('mongodb+srv://admin:123@clustergetapet.rkoab.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+    await mongoose.connect(process.env.DB_URL)
     console.log('You are connected with Mongoose!')
 }
 

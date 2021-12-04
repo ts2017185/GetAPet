@@ -8,7 +8,7 @@ import Select from './Select'
 function PetForm({ handleSubmit, petData, btnText }) {
   const [pet, setPet] = useState(petData || {})
   const [preview, setPreview] = useState([])
-  const colors = ['Branco', 'Preto', 'Cinza', 'Caramelo']
+  const colors = ['White', 'Black', 'Grey', 'Mix Colors']
 
   function onFileChange(e) {
     console.log(Array.from(e.target.files))
@@ -53,39 +53,39 @@ function PetForm({ handleSubmit, petData, btnText }) {
             ))}
       </div>
       <Input
-        text="Imagens do Pet"
+        text="Pet images"
         type="file"
         name="images"
         handleOnChange={onFileChange}
         multiple={true}
       />
       <Input
-        text="Nome do Pet"
+        text="Pet's name"
         type="text"
         name="name"
-        placeholder="Digite o nome"
+        placeholder="Enter the name"
         handleOnChange={handleChange}
         value={pet.name || ''}
       />
       <Input
-        text="Idade do Pet"
+        text="Pet age"
         type="number"
         name="age"
-        placeholder="Digite a idade"
+        placeholder="Enter the age"
         handleOnChange={handleChange}
         value={pet.age || ''}
       />
       <Input
-        text="Peso do Pet"
+        text="Pet Weight"
         type="number"
         name="weight"
-        placeholder="Digite o peso aproximado"
+        placeholder="Enter the approximate weight"
         value={pet.weight || ''}
         handleOnChange={handleChange}
       />
       <Select
         name="color"
-        text="Selecione a categoria"
+        text="Select category"
         options={colors}
         handleOnChange={handleColor}
         value={pet.color || ''}

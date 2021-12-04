@@ -17,32 +17,32 @@ function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.navbar_logo}>
         <img src={Logo} alt="Get A Pet" />
-        <h2>Get A Pet</h2>
+        <h2>Look This Pet!</h2>
       </div>
       <ul>
         <li>
-          <Link to="/">Adotar</Link>
+          <Link to="/">To Adopt</Link>
         </li>
         {authenticated ? (
           <>
             <li>
-              <Link to="/pet/myadoptions">Minhas Adoções</Link>
+              <Link to="/pet/myadoptions">My Actions</Link>
             </li>
             <li>
-              <Link to="/pet/mypets">Meus Pets</Link>
+              <Link to="/pet/mypets">My Pets</Link>
             </li>
             <li>
-              <Link to="/user/profile">Meu Perfil</Link>
+              <Link to="/user/profile">My Profile</Link>
             </li>
-            <li onClick={logout}>Sair</li>
+            <li onClick={logout}>Logout</li>
           </>
         ) : (
           <>
             <li>
-              <Link to="/login">Entrar</Link>
+              <Link to="/login">Sign In</Link>
             </li>
             <li>
-              <Link to="/register">Registar</Link>
+              <Link to="/register">Register</Link>
             </li>
           </>
         )}

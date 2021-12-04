@@ -1,5 +1,4 @@
 import api from '../utils/api'
-
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import useFlashMessage from './useFlashMessage'
@@ -22,7 +21,7 @@ export default function useAuth() {
   }, [])
 
   async function register(user) {
-    let msgText = 'Cadastro realizado com sucesso!'
+    let msgText = 'Registration successfully!'
     let msgType = 'success'
 
     try {
@@ -32,7 +31,6 @@ export default function useAuth() {
 
       await authUser(data)
     } catch (error) {
-      // tratar erro
       msgText = error.response.data.message
       msgType = 'error'
     }
@@ -41,8 +39,8 @@ export default function useAuth() {
   }
 
   async function login(user) {
-    let msgText = 'Login realizado com sucesso!'
-    let msgType = 'success'
+    let msgText = 'Login successfully!'
+    let msgType = 'Success'
 
     try {
       const data = await api.post('/users/login', user).then((response) => {
@@ -51,7 +49,6 @@ export default function useAuth() {
 
       await authUser(data)
     } catch (error) {
-      // tratar erro
       msgText = error.response.data.message
       msgType = 'error'
     }
@@ -65,10 +62,10 @@ export default function useAuth() {
 
     history.push('/')
   }
-
+  
   function logout() {
-    const msgText = 'Logout realizado com sucesso!'
-    const msgType = 'success'
+    const msgText = 'Successfully logged out!'
+    const msgType = 'Success'
 
     setAuthenticated(false)
     localStorage.removeItem('token')
